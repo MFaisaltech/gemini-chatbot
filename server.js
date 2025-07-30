@@ -4,11 +4,16 @@ require('dotenv').config();
 const cors = require('cors');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
+
+// Health check route
+app.get("/", (req, res) => {
+  res.send("🚀 Gemini Chatbot API is running.");
+});
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
@@ -32,5 +37,5 @@ app.post('/chat', async (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+  console.log(`✅ Server running at http://localhost:${port} or on your deployed URL`);
 });
